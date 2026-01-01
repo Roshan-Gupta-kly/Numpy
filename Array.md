@@ -32,21 +32,10 @@ While Python’s built-in lists are flexible and easy to use, they have limitati
 
 ---
 
-## Conclusion
-
-NumPy is an essential library for numerical computing in Python. Its speed, memory efficiency, and rich functionality make it the foundation of many popular libraries such as Pandas, Matplotlib, SciPy, and scikit-learn.
-
-Learning NumPy is a must for anyone starting in data science, machine learning, or scientific computing.
-
-
-# Creating NumPy Arrays from Python Sequences
-
 ## Creating Arrays from Python Sequences
 
 The most basic way to create a NumPy array is by converting a Python sequence such as a **list** or a **tuple**.  
 The `numpy.array()` function takes a sequence as input and returns a new NumPy array.
-
----
 
 ## Understanding NumPy Arrays
 
@@ -352,7 +341,7 @@ import numpy as np
 # Load data from the CSV file
 try:
     # Relative paths will cause validation to fail, please use absolute paths in the lab
-    data = np.loadtxt('/home/labex/project/data.csv', delimiter=',', skiprows=1)
+    data = np.loadtxt('/home/data.csv', delimiter=',', skiprows=1)
     print("Data loaded from data.csv:")
     print(data)
 except IOError:
