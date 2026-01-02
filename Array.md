@@ -361,3 +361,249 @@ This method is very efficient for loading structured numerical data into arrays 
 In this lab, you have learned the fundamental techniques for creating `NumPy arrays`. You practiced creating arrays from Python lists, using intrinsic functions like `np.arange` and `np.zeros`, manipulating existing arrays through `views`, `copies`, and `joining`, and loading data from a text file using `np.loadtxt`.
 
 These skills are the building blocks for nearly all numerical and scientific computing tasks you will perform with Python. With a solid understanding of array creation, you are now ready to explore more advanced array manipulation and mathematical operations in `NumPy`.
+
+## Why Indexing Matters
+Indexing is fundamental to data manipulation because it allows you to:
+
+- Extract subsets of data for analysis
+- Modify specific values in large datasets
+- Filter data based on conditions
+- Perform vectorized operations on selected elements
+- These skills are essential for any data analysis or scientific computing task in Python.
+
+## Understanding Array Indexing
+### Zero-Based Indexing
+Like Python lists, NumPy arrays use zero-based indexing. This means:
+
+- The first element is at index 0
+- The second element is at index 1
+- And so on...
+### Visualizing Array Indices
+For an array x = [10, 20, 30, 40, 50]:
+
+```code
+Index:  0   1   2   3   4
+Value: 10  20  30  40  50
+```
+So x[0] gives 10, x[2] gives 30, etc.
+
+## Slicing Syntax
+Slicing lets you select a range of elements with the syntax `start:stop:step:`
+
+- `start:` Index where the slice begins (inclusive)
+- `stop:` Index where the slice ends (exclusive)
+- `step:` How many elements to skip (optional, defaults to 1)
+
+### Common slicing patterns:
+- `x[1:4]:` Elements at indices 1, 2, 3
+- `x[:3]:` First 3 elements (indices 0, 1, 2)
+- `x[2:]:` From index 2 to the end
+- `x[::2]:` Every other element starting from index 0
+- `x[::-1]:` Reverse the entire array
+
+```python
+import numpy as np
+
+# Create a 1D array with numbers from 0 to 9
+x = np.arange(10)
+print("Original array:", x)
+
+# Access a single element at index 2
+element = x[2]
+print("Element at index 2:", element)
+
+# Slice the array from index 1 up to (but not including) index 7, with a step of 2
+a_slice = x[1:7:2]
+print("Slice from 1 to 7 with step 2:", a_slice)
+```
+output
+```
+Original array: [0 1 2 3 4 5 6 7 8 9]
+Element at index 2: 2
+Slice from 1 to 7 with step 2: [1 3 5]
+```
+
+## Indexing Multidimensional Arrays
+Now let's work with arrays that have more than one dimension. This is where NumPy really shines compared to Python lists!
+
+### Thinking in Multiple Dimensions
+### 2D Arrays as Tables
+A 2D array is like a spreadsheet or table:
+
+- Rows are the first dimension (horizontal)
+- Columns are the second dimension (vertical)
+- You specify both row and column indices: `array[row, column]`
+
+### Visualizing 2D Indexing
+For a 2D array:
+```
+array = [[10, 20, 30],
+         [40, 50, 60],
+         [70, 80, 90]]
+
+Indices:     0,0  0,1  0,2
+             1,0  1,1  1,2
+             2,0  2,1  2,2
+```
+- `array[0, 0]` → 10 (first row, first column)
+- `array[1, 2]` → 60 (second row, third column)
+- `array[2, 1` → 80 (third row, second column)
+
+### Selecting Entire Rows or Columns
+- `array[0] or array[0, :]` → entire first row [10, 20, 30]
+- `array[:, 1]` → entire second column [20, 50, 80]
+- This is much more convenient than nested Python lists!
+
+```python
+import numpy as np
+
+# Create a 2D array (3 rows, 4 columns)
+x = np.arange(12).reshape(3, 4)
+print("Original 2D array:\n", x)
+
+# Access the element at row 1, column 2
+element = x[1, 2]
+print("\nElement at (1, 2):", element)
+
+# Access the entire first row (row index 0)
+first_row = x[0]
+print("\nFirst row:", first_row)
+```
+
+output
+```
+Original 2D array:
+ [[ 0  1  2  3]
+ [ 4  5  6  7]
+ [ 8  9 10 11]]
+
+Element at (1, 2): 6
+
+First row: [0 1 2 3]
+```
+
+## Advanced Indexing
+Basic slicing works well for contiguous regions, but sometimes you need more complex selections. NumPy provides two powerful advanced indexing techniques:
+
+## Integer Array Indexing
+Select arbitrary elements by providing an array of indices. This is like picking specific items from a list using their positions.
+
+`Real-world example:` You have test scores and want to check scores for students at positions 3, 7, and 12:
+
+```
+scores = np.array([85, 92, 78, 95, 88, 76, 91, 89, 84, 93, 87, 90, 82])
+student_positions = [3, 7, 12]  # Students you're interested in
+selected_scores = scores[student_positions]  # [95, 89, 82]
+```
+
+### Boolean Array Indexing (Masking)
+Select elements based on conditions. Create a "mask" of True/False values, then use it to filter the array.
+
+`Real-world example:` Filter passing grades (≥ 80) from a class:
+```
+scores = np.array([85, 92, 78, 95, 88, 76, 91, 89, 84, 93])
+passing_mask = scores >= 80  # [True, True, False, True, True, False, True, True, True, True]
+passing_scores = scores[passing_mask]  # [85, 92, 95, 88, 91, 89, 84, 93]
+```
+
+### Why This Matters
+- `Integer indexing:` Perfect for sampling specific data points
+- `Boolean indexing:` Ideal for data filtering and conditional selections
+- Both create copies (not views), so modifications don't affect the original array
+
+```python
+import numpy as np
+
+# --- Integer Array Indexing ---
+x = np.arange(10, 0, -1)
+print("Array for integer indexing:", x)
+
+# Select elements at indices 3, 3, 1, and 8
+selected_elements = x[np.array([3, 3, 1, 8])]
+print("Selected elements with integer array:", selected_elements)
+
+
+# --- Boolean Array Indexing ---
+y = np.array([1., -1., -2., 3.])
+print("\nArray for boolean indexing:", y)
+
+# Create a boolean mask for negative elements
+mask = y < 0
+print("Boolean mask (y < 0):", mask)
+
+# Select elements where the condition is True
+negative_elements = y[mask]
+print("Elements where y < 0:", negative_elements)
+```
+
+output
+```
+Array for integer indexing: [10  9  8  7  6  5  4  3  2  1]
+Selected elements with integer array: [7 7 9 2]
+
+Array for boolean indexing: [ 1. -1. -2.  3.]
+Boolean mask (y < 0): [False  True  True False]
+Elements where y < 0: [-1. -2.]
+```
+
+## Assigning Values to Indexed Arrays
+Indexing isn't just for reading data - it's also powerful for modifying data. You can use any indexing method on the left side of the assignment operator `(=)` to change specific elements.
+
+## Broadcasting: Making Shapes Compatible
+When assigning values to indexed arrays, NumPy uses broadcasting to make the shapes compatible. This is one of NumPy's most powerful features!
+
+### Broadcasting Rules
+NumPy can automatically expand smaller arrays to match larger ones during assignment, following these rules:
+
+- `Single value to multiple elements`: One value can be assigned to many positions
+- `Small array to larger selection:` As long as dimensions are compatible
+
+### Examples of Broadcasting in Assignment
+```python
+# Single value to a slice
+arr = np.array([1, 2, 3, 4, 5])
+arr[1:4] = 99  # [1, 99, 99, 99, 5]
+
+# Array to matching slice
+arr = np.array([1, 2, 3, 4, 5])
+arr[1:4] = [10, 20, 30]  # [1, 10, 20, 30, 5]
+
+# Boolean indexing with broadcasting
+arr = np.array([1, 2, 3, 4, 5])
+arr[arr % 2 == 0] = -1  # Replace all even numbers with -1
+```
+
+### Important Notes
+- Broadcasting only works when shapes are compatible
+- The assigned value's shape must be able to "fit" into the indexed selection
+- This is much more efficient than looping through elements manually
+
+```python
+import numpy as np
+
+# --- Assigning a single value to a slice ---
+x = np.arange(10)
+print("Original array:", x)
+
+# Assign the value 99 to elements from index 2 to 4
+x[2:5] = 99
+print("After assigning 99 to slice [2:5]:", x)
+
+
+# --- Assigning values based on a boolean condition ---
+y = np.arange(10)
+print("\nOriginal array:", y)
+
+# Assign the value -1 to all even numbers
+y[y % 2 == 0] = -1
+print("After assigning -1 to even numbers:", y)
+```
+
+output
+```
+Original array: [0 1 2 3 4 5 6 7 8 9]
+After assigning 99 to slice [2:5]: [ 0  1 99 99 99  5  6  7  8  9]
+
+Original array: [0 1 2 3 4 5 6 7 8 9]
+After assigning -1 to even numbers: [-1  1 -1  3 -1  5 -1  7 -1  9]
+```
